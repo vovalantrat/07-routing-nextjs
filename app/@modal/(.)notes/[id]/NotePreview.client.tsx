@@ -23,7 +23,7 @@ export default function NotePreviewClient({ id }: Props) {
   if (isError || !note) return <p>Something went wrong.</p>;
 
   return (
-    <Modal>
+    <Modal onClose={() => router.back()}>
       <div className={css.container}>
         <div className={css.item}>
           <div className={css.header}>
