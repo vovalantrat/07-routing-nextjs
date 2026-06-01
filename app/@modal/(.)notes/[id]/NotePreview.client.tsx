@@ -1,13 +1,23 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+import { fetchNoteById } from "@/lib/api";
 import css from "./NotePreview.module.css";
-import type { Note } from "@/types/note";
 
 interface Props {
-  note: Note;
+  id: string;
 }
 
-export default function NotePreviewClient({ note }: Props) {
+export default function NotePreviewClient({ id }: Props) {
+  const { data: note, isLoading, isError } = useQuery({
+    queryKey: ["note", id],
+    queryFn: () => fetchNoteById(id),
+    refetchOnMount: false,
+  });
+
+  if (isLoading) return <p>Loading, please wait...</p>;
+  if (isError || !note) return <p>Something went wrong.</p>;
+
   return (
     <div className={css.container}>
       <div className={css.item}>

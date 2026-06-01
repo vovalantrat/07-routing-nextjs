@@ -3,21 +3,21 @@
 import { useState } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useDebouncedCallback } from "use-debounce";
-import { useParams } from "next/navigation";
 import { fetchNotes } from "@/lib/api";
 import NoteList from "@/components/NoteList/NoteList";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
 import Modal from "@/components/Modal/Modal";
 import NoteForm from "@/components/NoteForm/NoteForm";
-import css from "./Notes.module.css";
+import css from "./NotesByTag.module.css";
 
-export default function NotesByTagClient() {
-  const { slug } = useParams<{ slug: string[] }>();
-  const tag = slug?.[0] === "all" ? undefined : slug?.[0];
+interface Props {
+  tag?: string;
+}
 
+export default function NotesClient({ tag }: Props) {
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState(""  );
+  const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const debouncedSearch = useDebouncedCallback((value: string) => {
